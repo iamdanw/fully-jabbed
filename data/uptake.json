@@ -4,7 +4,15 @@
             "areaCode": "K02000001",
             "areaName": "United Kingdom",
             "areaType": "overview",
-            "cumVaccinationFirstDoseUptakeByPublishDatePercentage": 59.8,
+            "cumVaccinationFirstDoseUptakeByPublishDatePercentage": 60,
+            "cumVaccinationSecondDoseUptakeByPublishDatePercentage": 10.3,
+            "date": "2021-04-04"
+        },
+        {
+            "areaCode": "K02000001",
+            "areaName": "United Kingdom",
+            "areaType": "overview",
+            "cumVaccinationFirstDoseUptakeByPublishDatePercentage": 59.9,
             "cumVaccinationSecondDoseUptakeByPublishDatePercentage": 10.2,
             "date": "2021-04-03"
         },
@@ -673,7 +681,7 @@
             "date": "2021-01-10"
         }
     ],
-    "length": 84,
+    "length": 85,
     "maxPageLimit": 2500,
     "pagination": {
         "current": "/v1/data?filters=areaName=United%2520Kingdom;areaType=overview&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22cumVaccinationFirstDoseUptakeByPublishDatePercentage%22:%22cumVaccinationFirstDoseUptakeByPublishDatePercentage%22,%22cumVaccinationSecondDoseUptakeByPublishDatePercentage%22:%22cumVaccinationSecondDoseUptakeByPublishDatePercentage%22%7D&format=json&page=1",
