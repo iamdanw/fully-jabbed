@@ -11,9 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '2.7'
       - name: Fetch current vaccination uptake
         run: |
           FILE=./data/uptake.json
@@ -21,7 +18,7 @@ jobs:
           response=$(curl -f "$url" --compressed)
           status=$?
           if [ $status -eq 0 ]; then
-              echo $response | python -m json.tool > $FILE
+              echo $response > $FILE
               echo "$FILE saved."
           else
               echo "curl exit code: ($status) $response"
