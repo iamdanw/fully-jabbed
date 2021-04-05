@@ -1,0 +1,37 @@
+name: Fully Jabbed - fetch and post
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fetch current vaccination uptake
+        run: |
+          FILE=./data/uptake.json
+          url="https://coronavirus.data.gov.uk/api/v1/data?filters=areaName=United%2520Kingdom;areaType=overview&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22cumVaccinationFirstDoseUptakeByPublishDatePercentage%22:%22cumVaccinationFirstDoseUptakeByPublishDatePercentage%22,%22cumVaccinationSecondDoseUptakeByPublishDatePercentage%22:%22cumVaccinationSecondDoseUptakeByPublishDatePercentage%22%7D&format=json"
+          response=$(curl -f "$url" --compressed)
+          status=$?
+          if [ $status -eq 0 ]; then
+              echo $response > $FILE
+              echo "$FILE saved."
+          else
+              echo "curl exit code: ($status) $response"
+              exit $status
+          fi
+      - name: Save data
+        env:
+          GIT_OWNER_EMAIL: ${{ secrets.GIT_OWNER_EMAIL }}
+          PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
+        run: |
+          if [[ `git status --porcelain` ]]; then
+            git config --global user.name 'iamdanw-bot'
+            git config --global user.email 'iamdanw-bot@users.noreply.github.com'
+            git commit -am "Add latest uptake data"
+            git push
+          else
+            echo 'No changes to commit'
+          fi
