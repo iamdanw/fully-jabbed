@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Install jq
+        run: sudo apt-get install jq
       - name: Fetch current vaccination uptake
         run: |
           FILE=./data/uptake.json
@@ -24,3 +26,8 @@ jobs:
               echo "curl exit code: ($status) $response"
               exit $status
           fi
+      - name: Get latest uptake percentage
+        id: uptake
+        run: echo ::set-output name=second::$(cat data/uptake.json | jq '.data[0] | .cumVaccinationSecondDoseUptakeByPublishDatePercentage')
+      - name: Output uptake percentage
+        run: echo ${{ steps.uptake.outputs.second }}
