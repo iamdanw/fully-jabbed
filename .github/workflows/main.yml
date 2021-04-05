@@ -27,16 +27,3 @@ jobs:
               echo "curl exit code: ($status) $response"
               exit $status
           fi
-      - name: Save data
-        env:
-          GIT_OWNER_EMAIL: ${{ secrets.GIT_OWNER_EMAIL }}
-          PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
-        run: |
-          if [[ `git status --porcelain` ]]; then
-            git config --global user.name 'iamdanw-bot'
-            git config --global user.email 'iamdanw-bot@users.noreply.github.com'
-            git commit -am "Add latest uptake data"
-            git push
-          else
-            echo 'No changes to commit'
-          fi
