@@ -11,9 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '2.7'
+      - name: Install jq
+        run: sudo apt-get install jq
       - name: Fetch current vaccination uptake
         run: |
           FILE=./data/uptake.json
@@ -21,22 +20,22 @@ jobs:
           response=$(curl -f "$url" --compressed)
           status=$?
           if [ $status -eq 0 ]; then
-              echo $response | python -m json.tool > $FILE
+              echo $response > $FILE
               echo "$FILE saved."
           else
               echo "curl exit code: ($status) $response"
               exit $status
           fi
-      - name: Save data
-        env:
-          GIT_OWNER_EMAIL: ${{ secrets.GIT_OWNER_EMAIL }}
-          PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
-        run: |
-          if [[ `git status --porcelain` ]]; then
-            git config --global user.name 'iamdanw-bot'
-            git config --global user.email 'iamdanw-bot@users.noreply.github.com'
-            git commit -am "Add latest uptake data"
-            git push
-          else
-            echo 'No changes to commit'
-          fi
+      - name: Get latest uptake percentage
+        id: uptake
+        run: echo ::set-output name=second::$(cat data/uptake.json | jq '.data[0] | .cumVaccinationSecondDoseUptakeByPublishDatePercentage')
+      - name: Output uptake percentage
+        run: echo ${{ steps.uptake.outputs.second }}
+      - name: Tweet current uptake
+        uses: devigned/go-twitter-action@v1
+        with:
+          message: ${{ steps.uptake.outputs.second }}
+          apiKey: ${{ secrets.API_KEY }}
+          apiKeySecret: ${{ secrets.API_KEY_SECRET }}
+          accessToken: ${{ secrets.ACCESS_TOKEN }}
+          accessTokenSecret: ${{ secrets.ACCESS_TOKEN_SECRET }}
