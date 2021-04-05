@@ -2,6 +2,8 @@ name: Fully Jabbed - fetch and post
 
 on:
   push:
+  schedule:
+    - cron:  '*/15 * * * *'
 
 jobs:
   build:
