@@ -10,7 +10,7 @@ class FormatTweet
   end
 
   def run
-    puts Formatter.format(percentage)
+    puts Formatter.new(percentage).format
   end
 end
 
