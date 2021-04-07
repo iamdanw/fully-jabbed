@@ -1,6 +1,7 @@
 name: Fully Jabbed - fetch and post
 
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '*/15 * * * *'
 
