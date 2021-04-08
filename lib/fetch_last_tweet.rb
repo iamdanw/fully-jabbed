@@ -10,4 +10,4 @@ client = Twitter::REST::Client.new do |config|
   config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
 end
 
-puts client.user_timeline(1378989026636619776).first.text
+puts client.user_timeline(ARGV[0]).first.text
