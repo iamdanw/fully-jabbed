@@ -39,7 +39,7 @@ jobs:
         run: echo ::set-output name=formatted::$(bundle exec ruby lib/format_tweet.rb '${{ steps.uptake.outputs.second }}')
       - name: Fetch last tweet
         id: last-tweet
-        run: echo ::set-output name=text::$(bundle exec ruby lib/fetch_last_tweet.rb)
+        run: echo ::set-output name=text::$(bundle exec ruby lib/fetch_last_tweet.rb fullyjabbedUK)
         env:
              API_KEY: ${{ secrets.API_KEY }}
              API_KEY_SECRET: ${{ secrets.API_KEY_SECRET }}
